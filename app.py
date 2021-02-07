@@ -32,14 +32,14 @@ def parse_args():
                         help='Maximum length of passwords (including the given number). Defaults to 16')
     parser.add_argument('-s', '--separator', type=str, default=',',
                         help=r'Separator of combinations. Use "\n" to use a linebreak as a separator. Defaults to a comma')
-    parser.add_argument('-e', '--estimate', action='store_true',
-                        help='Alias to ---estimate-size ---estimate-time ---estimate-ammount')
     parser.add_argument('---estimate-size', action='store_true',
                         help='Will print the esitmated end-file size and exit')
     parser.add_argument('---estimate-time', action='store_true',
                         help='Will print the estimated time it would take to generate the end-file and exit')
     parser.add_argument('---estimate-ammount', action='store_true',
                         help='Will print the ammount of different combination to be generated and exit')
+    parser.add_argument('-e', '--estimate', action='store_true',
+                        help='Alias to ---estimate-size ---estimate-time ---estimate-ammount')
 
     args = parser.parse_args()
     if args.disable_lowercase:
