@@ -13,7 +13,7 @@ def parse_args():
         description='Combination-based password generator')
     parser.add_argument('-p', '--path', type=str, default=abspath,
                         help=f'Path to store password file on (without filename). Defaults to {abspath}')
-    parser.add_argument('-f', '--file', type=str, default='rockyou.txt', required=False, help='File name with extension. Defaults to rockyou.txt')
+    parser.add_argument('-f', '--file', type=str, default='rockyou.txt', help='File name with extension. Defaults to rockyou.txt')
     parser.add_argument('-l', '---disable-lowercase', action='store_true',
                         help='If given, will not include lowercase letters on (default) character set')
     parser.add_argument('-U', '---disable-uppercase', action='store_true',
