@@ -35,21 +35,40 @@ def to_readable_size(bytes: Decimal) -> str:
 
 
 def to_readable_time(seconds: Decimal) -> str:
-    if seconds <= 60:
+    seconds = Decimal(seconds)
+
+    MIN = Decimal(60)
+    HOU = Decimal(MIN * 60) # 3600
+    DAY = Decimal(HOU * 24) # 86400
+    MON = Decimal(DAY * 30) # 2592000
+    YEA = Decimal(MON * 12) # 31104000
+    DEC = Decimal(YEA * 10) # 311040000
+    CEN = Decimal(DEC * 10) # 3110400000
+    MIL = Decimal(CEN * 10) # 31104000000
+
+    if seconds <= MIN:
         return '{0:.2f} {1}'.format(seconds, pluralize('second', seconds))
-    elif seconds <= 3600:
-        return '{0:.2f} {1}'.format(seconds/60, pluralize('minute', seconds/60))
-    elif seconds <= 86400:
-        return '{0:.2f} {1}'.format(seconds/3600, pluralize('hour', seconds/3600))
-    elif seconds <= 2592000:
-        return '{0:.2f} {1}'.format(seconds/86400, pluralize('day', seconds/86400))
-    elif seconds <= 31104000:
-        return '{0:.2f} {1}'.format(seconds/2592000, pluralize('month', seconds/2592000))
-    elif seconds <= 311040000:
-        return '{0:.2f} {1}'.format(seconds/31104000, pluralize('year', seconds/31104000))
-    elif seconds <= 3110400000:
-        return '{0:.2f} {1}'.format(seconds/311040000, pluralize('decade', seconds/311040000))
-    elif seconds <= 31104000000:
-        return '{0:.2f} {1}'.format(seconds/3110400000, 'century' if seconds/3110400000 < 2 else 'centuries')
+    elif seconds <= HOU:
+        fmt = seconds/MIN
+        return '{0:.2f} {1}'.format(fmt, pluralize('minute', seconds/60))
+    elif seconds <= DAY:
+        fmt = seconds/HOU
+        return '{0:.2f} {1}'.format(fmt, pluralize('hour', fmt))
+    elif seconds <= MON:
+        fmt = seconds/DAY
+        return '{0:.2f} {1}'.format(fmt, pluralize('day', fmt))
+    elif seconds <= YEA:
+        fmt = seconds/MON
+        return '{0:.2f} {1}'.format(fmt, pluralize('month', fmt))
+    elif seconds <= DEC:
+        fmt = seconds/YEA
+        return '{0:.2f} {1}'.format(fmt, pluralize('year', fmt))
+    elif seconds <= CEN:
+        fmt = seconds/DEC
+        return '{0:.2f} {1}'.format(fmt, pluralize('decade', fmt))
+    elif seconds <= MIL:
+        fmt = seconds/CEN
+        return '{0:.2f} {1}'.format(fmt, 'century' if fmt < 2 else 'centuries')
     else:
-        return '{0:.2f} {1}'.format(seconds/31104000000, pluralize('millenium', seconds/31104000000))
+        fmt = seconds/MIL
+        return '{0:.2f} {1}'.format(fmt, pluralize('millenium', fmt))
