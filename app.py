@@ -15,13 +15,13 @@ def parse_args():
                         help=f'Path to store password file on (without filename). Defaults to {abspath}')
     parser.add_argument('-f', '--file', type=str, default='rockyou.txt', help='File name with extension. Defaults to rockyou.txt')
     parser.add_argument('-l', '---disable-lowercase', action='store_true',
-                        help='If given, will not include lowercase letters on (default) character set')
+                        help='If given, will not include lowercase letters on character set')
     parser.add_argument('-U', '---disable-uppercase', action='store_true',
-                        help='If given, will not include uppercase letters on (default) character set')
+                        help='If given, will not include uppercase letters on character set')
     parser.add_argument('-n', '---disable-numbers', action='store_true',
-                        help='If given, will not include numbers on (default) character set')
+                        help='If given, will not include numbers on character set')
     parser.add_argument('-c', '---disable-special-chars', action='store_true',
-                        help='If given, will not include special characters on (default) character set')
+                        help='If given, will not include special characters on character set')
     parser.add_argument('-d', '---disable-chars', type=list, default=False,
                         help='Disable a certain set of characters from the default character set')
     parser.add_argument('-C', '--character-set', type=list, default=['*', '.', '?', '@', '#', '$', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
@@ -81,12 +81,11 @@ def main() -> int:
         elif args.estimate_ammount:
             return print(estimator.estimate_ammount()) or 0
 
-    with open(f'{args.path}/{args.file}', 'w') as f:
+    with open(f'{args.path}/{args.file}', 'wb+') as f:
         for i in range(args.minimum_length, args.maximum_length + 1):
             for c in itertools.product(args.character_set, repeat=i):
-                f.write(utils.join(c, args.separator))
+                f.write(bytes(utils.join(c, args.separator), 'utf-8'))
 
-    with open(f'{args.path}/{args.file}', 'rb+') as f:
         f.seek(-1, os.SEEK_END)
         f.truncate()
 
