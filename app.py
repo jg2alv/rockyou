@@ -28,9 +28,9 @@ def parse_args():
                         help='Disable a certain set of characters from the default character set')
     parser.add_argument('-C', '--character-set', type=list, default=['*', '.', '?', '@', '#', '$', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
                                                                      'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], help="Character set to be used. Defaults to *.?@#$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-    parser.add_argument('-m', '---minimum-length', type=int, default=4,
+    parser.add_argument('-m', '---min-length', type=int, default=4,
                         help='Minimum length of passwords (including the given number). Defaults to 4')
-    parser.add_argument('-M', '---maximum-length', type=int, default=16,
+    parser.add_argument('-M', '---max-length', type=int, default=16,
                         help='Maximum length of passwords (including the given number). Defaults to 16')
     parser.add_argument('-s', '--separator', type=str, default=',',
                         help="Separator of combinations. Use '\\n' to use a linebreak as a separator. Defaults to a comma")
@@ -69,6 +69,10 @@ def parse_args():
         print('app.py: error: argument -s/--separator: character set cannot contain separator character')
         sys.exit(-1)
 
+    if args.min_length > args.max_length:
+        print('app.py: warning: inverting maximum and minimum lengths')
+        args.min_length, args.max_length = args.max_length, args.min_length
+
     args.path += '/' if args.path[-1] != '/' else args.path
     args.separator.replace('\\n', '\n').replace('\\t', '\t')
 
@@ -91,7 +95,7 @@ def main() -> int:
 
     with open(f'{args.path}/{args.file}', 'wb+') as f:
         [f.write(bytes(utils.join(c, args.separator), 'utf-8'))
-         for c in rockyou.rockyou(args.minimum_length, args.maximum_length, args.character_set)]
+         for c in rockyou.rockyou(args.min_length, args.max_length, args.character_set)]
 
         f.seek(-1, os.SEEK_END)
         f.truncate()
