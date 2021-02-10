@@ -5,6 +5,7 @@ import sys
 import re
 
 import utils
+import rockyou
 
 def parse_args():
     abspath = os.path.abspath(os.path.dirname(__file__))
@@ -82,9 +83,7 @@ def main() -> int:
             return print(estimator.estimate_ammount()) or 0
 
     with open(f'{args.path}/{args.file}', 'wb+') as f:
-        for i in range(args.minimum_length, args.maximum_length + 1):
-            for c in itertools.product(args.character_set, repeat=i):
-                f.write(bytes(utils.join(c, args.separator), 'utf-8'))
+        [ f.write(bytes(utils.join(c, args.separator), 'utf-8')) for c in rockyou.rockyou(args.minimum_length, args.maximum_length, args.character_set) ]
 
         f.seek(-1, os.SEEK_END)
         f.truncate()

@@ -1,8 +1,8 @@
-import itertools
 import os
 import time
 
 import conversor
+import rockyou
 
 
 class Estimator:
@@ -14,8 +14,7 @@ class Estimator:
         self.separator = args.separator
 
     def estimate(self) -> str:
-        s, t, a = self.estimate_size(), self.estimate_time(), self.estimate_ammount()
-        return f'Total size: {s}\nTotal time (rough estimate): {t}\nTotal ammount: {a}'
+        return f'Total size: {self.estimate_size()}\nTotal time (rough estimate): {self.estimate_time()}\nTotal ammount: {self.estimate_ammount()}'
 
     def estimate_size(self) -> str:
         # Couting separator characters.
@@ -29,12 +28,12 @@ class Estimator:
         return conversor.to_readable_size(n)
 
     def estimate_time(self) -> str:
-        def benchmark() -> float:
+        def benchmark(path) -> float:
             start = time.time()
 
             with open(path, 'wb+') as f:
-                for c in itertools.product(self.chars):
-                    f.write(bytes(join(c, self.separator), 'utf-8'))
+                [f.write(bytes(join(c, self.separator), 'utf-8'))
+                 for c in rockyou.rockyou(1, 1, self.chars)]
 
                 f.seek(-1, os.SEEK_END)
                 f.truncate()
@@ -44,9 +43,9 @@ class Estimator:
 
             return end - start
 
-        path = f'{self.path}/temp.txt'
         n = self.estimate_ammount(1, 1)
-        av = sum([ benchmark() for _ in range(500) ]) / 500
+        av = sum([benchmark(f'{self.path}/temp.txt')
+                  for _ in range(500)]) / 500
 
         return conversor.to_readable_time(av * self.estimate_ammount() / n)
 
@@ -58,6 +57,7 @@ class Estimator:
             n += _len ** i
 
         return n
+
 
 def join(combination: tuple, separator: str) -> str:
     return '{}{}'.format(''.join(combination), separator)
