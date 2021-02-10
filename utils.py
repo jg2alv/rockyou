@@ -9,8 +9,8 @@ class Estimator:
     def __init__(self, args: list) -> None:
         self.path = args.path
         self.chars = args.character_set
-        self.min = args.minimum_length
-        self.max = args.maximum_length
+        self.max = args.max_length
+        self.min = args.min_length
         self.separator = args.separator
 
     def estimate(self) -> str:
@@ -45,7 +45,7 @@ class Estimator:
 
         n = self.estimate_ammount(1, 1)
         av = sum([benchmark(f'{self.path}/temp.txt')
-                  for _ in range(500)]) / 500
+                  for _ in range(750)]) / 750
 
         return conversor.to_readable_time(av * self.estimate_ammount() / n)
 
