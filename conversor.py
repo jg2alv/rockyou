@@ -24,11 +24,11 @@ def to_readable_size(bytes: Decimal) -> str:
         return '{0:.2f} GB'.format(bytes/GB)
     elif TB <= bytes < PB:
         return '{0:.2f} TB'.format(bytes/TB)
-    elif PB <= bytes < TB:
+    elif PB <= bytes < EB:
         return '{0:.2f} PB'.format(bytes/PB)
-    elif EB <= bytes < PB:
+    elif EB <= bytes < ZB:
         return '{0:.2f} EB'.format(bytes/EB)
-    elif ZB <= bytes < EB:
+    elif ZB <= bytes < YB:
         return '{0:.2f} ZB'.format(bytes/ZB)
     else:
         return '{0:.2f} YB'.format(bytes/YB)
@@ -38,13 +38,17 @@ def to_readable_time(seconds: Decimal) -> str:
     seconds = Decimal(seconds)
 
     MIN = Decimal(60)
-    HOU = Decimal(MIN * 60) # 3600
-    DAY = Decimal(HOU * 24) # 86400
-    MON = Decimal(DAY * 30) # 2592000
-    YEA = Decimal(MON * 12) # 31104000
-    DEC = Decimal(YEA * 10) # 311040000
-    CEN = Decimal(DEC * 10) # 3110400000
-    MIL = Decimal(CEN * 10) # 31104000000
+    HOU = Decimal(MIN * 60)    # 3600
+    DAY = Decimal(HOU * 24)    # 86400
+    MON = Decimal(DAY * 30)    # 2592000
+    YEA = Decimal(MON * 12)    # 31104000
+    DEC = Decimal(YEA * 10)    # 311040000
+    CEN = Decimal(DEC * 10)    # 3110400000
+    MIL = Decimal(CEN * 10)    # 31104000000
+    AGE = Decimal(MIL * 1000)  # 31104000000000
+    EPO = Decimal(AGE * 10)    # 311040000000000
+    ERA = Decimal(EPO * 10)    # 3110400000000000
+    EON = Decimal(ERA * 5)     # 15552000000000000
 
     if seconds <= MIN:
         return '{0:.2f} {1}'.format(seconds, pluralize('second', seconds))
@@ -69,6 +73,15 @@ def to_readable_time(seconds: Decimal) -> str:
     elif seconds <= MIL:
         fmt = seconds/CEN
         return '{0:.2f} {1}'.format(fmt, 'century' if fmt < 2 else 'centuries')
-    else:
+    elif seconds <= AGE:
         fmt = seconds/MIL
-        return '{0:.2f} {1}'.format(fmt, pluralize('millenium', fmt))
+        return '{0:.2f} {1}'.format(fmt, 'millenium' if fmt < 2 else 'millenia')
+    elif seconds <= EPO:
+        fmt = seconds/AGE
+        return '{0:.2f} {1}'.format(fmt, pluralize('epoch', fmt))
+    elif seconds <= ERA:
+        fmt = seconds/EPO
+        return '{0:.2f} {1}'.format(fmt, pluralize('era', fmt))
+    else:
+        fmt = seconds/EON
+        return '{0:.2f} {1}'.format(fmt, pluralize('eon', fmt))
