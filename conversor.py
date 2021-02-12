@@ -35,8 +35,6 @@ def to_readable_size(bytes: Decimal) -> str:
 
 
 def to_readable_time(seconds: Decimal) -> str:
-    seconds = Decimal(seconds)
-
     MIN = Decimal(60)
     HOU = Decimal(MIN * 60)    # 3600
     DAY = Decimal(HOU * 24)    # 86400

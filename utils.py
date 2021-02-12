@@ -1,5 +1,6 @@
 import os
 import time
+from decimal import Decimal
 
 import conversor
 import rockyou
@@ -25,29 +26,24 @@ class Estimator:
         for i in range(self.min, self.max + 1):
             n += _len ** i * i
 
-        return conversor.to_readable_size(n)
+        return conversor.to_readable_size(Decimal(n))
 
     def estimate_time(self) -> str:
-        def benchmark(path) -> float:
-            start = time.time()
-
-            with open(path, 'wb+') as f:
-                [f.write(bytes(join(c, self.separator), 'utf-8'))
-                 for c in rockyou.rockyou(1, 1, self.chars)]
-
-                f.seek(-1, os.SEEK_END)
-                f.truncate()
-
-            end = time.time()
-            os.remove(path)
-
-            return end - start
-
         n = self.estimate_ammount(1, 1)
-        av = sum([benchmark(f'{self.path}/temp.txt')
-                  for _ in range(750)]) / 750
+        path = f'{self.path}/temp.txt'
+        start = time.time()
 
-        return conversor.to_readable_time(av * self.estimate_ammount() / n)
+        with open(path, 'wb+') as f:
+            [f.write(bytes(join(c, self.separator), 'utf-8'))
+             for c in rockyou.rockyou(1, 1, self.chars)]
+
+            f.seek(-1, os.SEEK_END)
+            f.truncate()
+
+        end = time.time()
+        os.remove(path)
+
+        return conversor.to_readable_time(Decimal(end - start) * Decimal(self.estimate_ammount()) / Decimal(n))
 
     def estimate_ammount(self, min: int = None, max: int = None) -> int:
         n = 0
