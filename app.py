@@ -25,7 +25,7 @@ def parse_args():
     parser.add_argument('-c', '---disable-special-chars', action='store_true',
                         help='If given, will not include special characters on character set')
     parser.add_argument('-d', '---disable-chars', type=list, default=False,
-                        help='Disable a certain set of characters from the default character set')
+                        help='Disable a certain set of characters from the character set')
     parser.add_argument('-C', '--character-set', type=list, default=['*', '.', '?', '@', '#', '$', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
                                                                      'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], help="Character set to be used. Defaults to *.?@#$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
     parser.add_argument('-m', '---min-length', type=int, default=4,
@@ -71,6 +71,10 @@ def parse_args():
     if args.separator in args.character_set:
         parser.print_usage()
         print('app.py: error: argument -s/--separator: character set cannot contain separator character')
+        sys.exit(-1)
+
+    if args.min_length < 1 or args.max_lenght < 1:
+        print('app.py: error: argument -m/---min-lenght and -M/---max-length: both must be greater than 0')
         sys.exit(-1)
 
     if args.min_length > args.max_length:
