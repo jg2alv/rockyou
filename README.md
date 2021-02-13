@@ -21,6 +21,8 @@ Optional arguments:
 * `---estimate-time`: Prints the time the script would take to generate all constraint-respecting passwords (units depend on the ammount of seconds. They're auto-converted up to milleniums) and exits. Note that this depends upon the device where the script is running (RAM, CPU, etc)
 * `---estimate-ammount`: Prints the number of (different) password combinations that can be generated (based on given constraints) and exits
 * `-e` (`--estimate`): Alias to `---estimate-size ---estimate-time ---estimate-ammount`
+* `--prefix`: Add the given prefix to all generated passwords. That's useful when one knows one or more of the starting characters of a password
+* `--suffix`: Add the given suffix to all generated passwords. That's useful when one knows one or more of the starting characters of a password
 
 
 Examples:
@@ -29,6 +31,8 @@ $ python3 app.py -m 4 -M 4 -lUc # generates all 4 digit combinations possible (f
 $ python3 app.py -m 8 -M 8 -U -c # generates all combinations with lowercase letters (a-z) and numbers (0-9). i.e a1b2c3d4 will be among them
 $ python3 app.py -e # prints the number of different combinations that can be generated, the hard-disk storage space and time required to finish password generation
 $ python3 app.py ---estimate-ammount # will print 212117604223062189336279045376 and exit
+$ python3 app.py -m 1 -M 2 -lUc --prefix 00 # will generate all 2 digit passwords possible -which will start with 00 (e.g 0001, 0002, 0003, 0004, etc)
+$ python3 app.py -m 1 -M 2 -lUc --suffix 00 # will generate all 2 digit passwords possible -which will end in 00 (e.g 0100, 0200, 0300, 0400, etc)
 ```
 
 ### Dependencies
