@@ -13,6 +13,8 @@ class Estimator:
         self.max = args.max_length
         self.min = args.min_length
         self.separator = args.separator
+        self.prefix = args.prefix
+        self.suffix = args.suffix
 
     def estimate(self) -> str:
         return f'Total size: {self.estimate_size()}\nTotal time (rough estimate): {self.estimate_time()}\nTotal ammount: {self.estimate_ammount()}'
@@ -24,7 +26,7 @@ class Estimator:
         _len = len(self.chars)
 
         for i in range(self.min, self.max + 1):
-            n += _len ** i * i
+            n += _len ** i * (i + len(self.prefix + self.suffix))
 
         return conversor.to_readable_size(Decimal(n))
 
@@ -34,7 +36,7 @@ class Estimator:
         start = time.time()
 
         with open(path, 'wb+') as f:
-            [f.write(bytes(join(c, self.separator), 'utf-8'))
+            [f.write(bytes(join(c, self.separator, self.prefix, self.suffix), 'utf-8'))
              for c in rockyou.rockyou(1, 1, self.chars)]
 
             f.seek(-1, os.SEEK_END)
@@ -55,5 +57,5 @@ class Estimator:
         return n
 
 
-def join(combination: tuple, separator: str) -> str:
-    return '{}{}'.format(''.join(combination), separator)
+def join(combination: tuple, separator: str, prefix: str, suffix: str) -> str:
+    return '{}{}'.format(f"{prefix}{''.join(combination)}{suffix}", separator)

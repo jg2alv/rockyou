@@ -34,6 +34,10 @@ def parse_args():
                         help='Maximum length of passwords (including the given number). Defaults to 16')
     parser.add_argument('-s', '--separator', type=str, default=',',
                         help="Separator of combinations. Use '\\n' to use a linebreak as a separator. Defaults to a comma")
+    parser.add_argument('--prefix', type=str, default='',
+                        help='A prefix to add to all passwords')
+    parser.add_argument('--suffix', type=str, default='',
+                        help='A suffix to add to all passwords')
     parser.add_argument('---estimate-size', action='store_true',
                         help='Will print the esitmated end-file size and exit')
     parser.add_argument('---estimate-time', action='store_true',
@@ -94,7 +98,7 @@ def main() -> int:
             return print(estimator.estimate_ammount()) or 0
 
     with open(f'{args.path}/{args.file}', 'wb+') as f:
-        [f.write(bytes(utils.join(c, args.separator), 'utf-8'))
+        [f.write(bytes(utils.join(c, args.separator, args.prefix, args.suffix), 'utf-8'))
          for c in rockyou.rockyou(args.min_length, args.max_length, args.character_set)]
 
         f.seek(-1, os.SEEK_END)
