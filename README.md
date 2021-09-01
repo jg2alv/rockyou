@@ -12,17 +12,17 @@ Optional arguments:
 * `-U` (`---disable-uppercase`): If given, the script will not use uppercse letters, from the character set, on password generation (used characters, if given: `*.?@#$abcdefghijklmnopqrstuvwxyz0123456789`)
 * `-n` (`---disable-numbers`): If given, the script will not use numbers, from the character set, on password generation (used characters, if given: `*.?@#$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`)
 * `-c` (`---disable-special-chars`): If given, the script will not use special characters, from the character set, on password generation (used characters, if given: `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`)
-* `-d` (`---disable-chars`): If given, the script will not the given characters, from the character set, on password generation (format: `abcdefgh`)
-* `-C` (`--character-set`): List of specific characters that will be used in password generation (format: `abcdefgh`)
+* `-d` (`---disable-chars`): If used, the script will not use the given characters, from the character set, on password generation (format: `abcdefgh`)
+* `-C` (`--character-set`): If used, the script will only use the given characters (format: `abcdefgh`)
 * `-m` (`---min-length`): Minimum password length (default: 4)
 * `-m` (`---max-length`): Maximum password length (default: 16)
 * `-s` (`--separator`): Character to split combinations (defaults to a comma)
 * `---estimate-size`: Prints the hard-disk storage size the end-file will consume (units depend on the ammount of bytes. They're auto-converted up to yottabytes) and exits
-* `---estimate-time`: Prints the time the script would take to generate all constraint-respecting passwords (units depend on the ammount of seconds. They're auto-converted up to milleniums) and exits. Note that this depends upon the device where the script is running (RAM, CPU, etc)
+* `---estimate-time`: Prints the time the script would take to generate all constraint-respecting passwords (units depend on the ammount of seconds. They're auto-converted up to milleniums) and exits. Note that this depends upon the device in which the script is running (RAM, CPU, etc)
 * `---estimate-ammount`: Prints the number of (different) password combinations that can be generated (based on given constraints) and exits
 * `-e` (`--estimate`): Alias to `---estimate-size ---estimate-time ---estimate-ammount`
 * `--prefix`: Add the given prefix to all generated passwords. That's useful when one knows one or more of the starting characters of a password
-* `--suffix`: Add the given suffix to all generated passwords. That's useful when one knows one or more of the starting characters of a password
+* `--suffix`: Add the given suffix to all generated passwords. That's useful when one knows one or more of the ending characters of a password
 
 
 Examples:
