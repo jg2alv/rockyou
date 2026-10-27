@@ -73,8 +73,8 @@ def parse_args():
         print('app.py: error: argument -s/--separator: character set cannot contain separator character')
         sys.exit(-1)
 
-    if args.min_length < 1 or args.max_lenght < 1:
-        print('app.py: error: argument -m/---min-lenght and -M/---max-length: both must be greater than 0')
+    if args.min_length < 1 or args.max_length < 1:
+        print('app.py: error: argument -m/---min-length and -M/---max-length: both must be greater than 0')
         sys.exit(-1)
 
     if args.min_length > args.max_length:
